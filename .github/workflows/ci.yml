@@ -1,0 +1,82 @@
+name: CI + Deploy com Aprovação
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  # ─────────────────────────────────────────
+  # JOB 1: CI (testes/build simulados)
+  # ─────────────────────────────────────────
+  ci:
+    name: 🧪 CI - Testes e Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Simular instalação de dependências
+        run: |
+          echo "📦 Instalando dependências..."
+          sleep 2
+          echo "✅ Dependências instaladas!"
+
+      - name: Simular testes
+        run: |
+          echo "🧪 Executando testes..."
+          sleep 3
+          echo "✅ Todos os testes passaram!"
+
+      - name: Simular build
+        run: |
+          echo "🔨 Gerando build da aplicação..."
+          sleep 2
+          echo "✅ Build concluído com sucesso!"
+
+  # ─────────────────────────────────────────
+  # JOB 2: Deploy em Homologação (automático)
+  # ─────────────────────────────────────────
+  deploy-homologacao:
+    name: 🚀 Deploy - Homologação
+    runs-on: ubuntu-latest
+    needs: ci
+    environment:
+      name: homologacao
+      url: https://homologacao.minha-app.com  # URL simulada
+    steps:
+      - name: Simular deploy em homologação
+        run: |
+          echo "🚀 Iniciando deploy em HOMOLOGAÇÃO..."
+          sleep 3
+          echo "✅ Aplicação disponível em homologação!"
+
+      - name: Simular smoke tests pós-deploy
+        run: |
+          echo "🔍 Executando smoke tests..."
+          sleep 2
+          echo "✅ Ambiente de homologação saudável!"
+
+  # ─────────────────────────────────────────
+  # JOB 3: Deploy em Produção (requer aprovação)
+  # ─────────────────────────────────────────
+  deploy-producao:
+    name: 🏁 Deploy - Produção
+    runs-on: ubuntu-latest
+    needs: deploy-homologacao
+    environment:
+      name: producao
+      url: https://minha-app.com  # URL simulada
+    steps:
+      - name: Simular deploy em produção
+        run: |
+          echo "🏁 Iniciando deploy em PRODUÇÃO..."
+          sleep 3
+          echo "✅ Aplicação disponível em produção!"
+
+      - name: Notificar conclusão
+        run: |
+          echo "🎉 Pipeline completo!"
+          echo "Ambiente: Produção"
+          echo "Status: Sucesso"
